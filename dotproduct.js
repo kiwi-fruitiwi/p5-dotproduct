@@ -22,7 +22,7 @@ function setup() {
     colorMode(HSB, 360, 100, 100, 100)
 
     a = new p5.Vector(100, -60)
-    b = new p5.Vector(200, 60)
+    b = new p5.Vector(200, 60).mult(2)
 }
 
 
@@ -67,24 +67,23 @@ function draw() {
     // draw the normal
     strokeWeight(1)
     stroke(0, 0, 80)
-    line(origin.x+v.x, origin.y+v.y, mouse.x, mouse.y)
+
+    // base of normal vector
+    let base = new p5.Vector(origin.x+v.x, origin.y+v.y)
+    drawArrow(base, mouse)
 }
 
 
-function drawArrow() {
+/* draws an arrow from our start vector to our end vector */
+function drawArrow(start, end) {
+    let diff = p5.Vector.sub(end, start)
+    push()
+    translate(start.x, start.y)
+    rotate(diff.heading())
 
-    /*
-       	protected void show_acc_vector(PApplet app) {
-		app.pushMatrix();
-		app.translate(pos.x, pos.y);
-		app.stroke(200, 100, 100, 50);
-		app.strokeWeight(2);
-		app.rotate(acc.heading());
-		float r = acc.mag() * ACC_VECTOR_SCALE;
-		app.line(0, 0, r, 0); // main acceleration vector
-		app.line(r, 0, r - 3, -3); // bottom arrow half
-		app.line(r, 0, r - 3, 3); // top arrow half
-		app.popMatrix();
-	}
-     */
+    let r = diff.mag()
+    line(0, 0, r, 0)
+    line(r, 0, r-3, -3)
+    line(r, 0, r-3, 3)
+    pop()
 }
